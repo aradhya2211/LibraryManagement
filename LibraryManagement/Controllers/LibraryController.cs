@@ -31,6 +31,7 @@ namespace LibraryManagement.Controllers
             }
         }
         [HttpGet("/{Name}")]
+        //Get Book by Name
         public async Task<ActionResult> GetBookByName(String Name)
         {
             try
