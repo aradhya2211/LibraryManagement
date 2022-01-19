@@ -29,6 +29,7 @@ namespace LibraryManagement.Models
         public double FinePerDay { get; set; }                      
         //Fine per day for late return
     }
+
     public record IssuerDetails
     {
         public String CustomerID { get; set; }                       
@@ -39,7 +40,7 @@ namespace LibraryManagement.Models
         //Subscription Duration in days
         public DateTime DateOfReturn { get; set; }                              
         //Date of return of the book
-        public double Fine => DateOfReturn.Subtract(SubscriptionDate).TotalDays;
+        public double Fine => DateOfReturn.Subtract(SubscriptionDate).TotalDays - SubscriptionDuration;
         //Fine implied due to late return
     }
 }

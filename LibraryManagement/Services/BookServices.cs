@@ -80,8 +80,7 @@ namespace LibraryManagement.Services
             try
             {
                await Collection.InsertOneAsync(NewBook);
-                Console.WriteLine(NewBook._id);
-               return await GetBookById(NewBook);
+               return await GetBookById(NewBook._id);
             }
             catch (Exception e)
             {
@@ -95,7 +94,7 @@ namespace LibraryManagement.Services
             try
             {
                 await Collection.ReplaceOneAsync(book => book._id == BookToBeUpdated._id, BookToBeUpdated);
-                return await GetBookById(BookToBeUpdated);
+                return await GetBookById(BookToBeUpdated._id);
             }
             catch (Exception e)
             {
@@ -105,11 +104,11 @@ namespace LibraryManagement.Services
             throw new NotImplementedException();
         }
 
-        public async Task<Book> GetBookById(Book BookById)
+        public async Task<Book> GetBookById(String BookId)
         {
             try
             {
-                var result = await Collection.FindAsync(book => book._id == BookById._id);
+                var result = await Collection.FindAsync(book => book._id == BookId);
                 return result.FirstOrDefault();
             }
             catch (Exception e)
@@ -128,6 +127,33 @@ namespace LibraryManagement.Services
                 .Where(IssueDetails => IssueDetails.CustomerID == CustomerId) != null)
                     .ToListAsync();
                 return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        public async Task<Book> Subscribe(String BookId, IssuerDetails Issuer)
+        {
+            try
+            {
+                Issuer.SubscriptionDate = DateTime.Now;
+                Issuer.DateOfReturn = Issuer.SubscriptionDate.AddDays(Issuer.SubscriptionDuration);
+                var BookToBeSubscribed = await GetBookById(BookId);
+                if(BookToBeSubscribed.Issuers == null)
+                {
+                    List<IssuerDetails> NewIssuerList = new List<IssuerDetails>();
+                    NewIssuerList.Add(Issuer);
+                    BookToBeSubscribed.Issuers = NewIssuerList;
+                }
+                else
+                {
+                    BookToBeSubscribed.Issuers.Add(Issuer);
+                }
+                var result = await Collection.ReplaceOneAsync(book => book._id == BookId, BookToBeSubscribed);
+                return BookToBeSubscribed;
             }
             catch (Exception e)
             {

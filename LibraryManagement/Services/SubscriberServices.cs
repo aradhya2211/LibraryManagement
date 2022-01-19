@@ -72,11 +72,11 @@ namespace LibraryManagement.Services
             }
         }
         //Get All Subscibers
-        public async Task<Subscribers> GetSubscribersByBsonId(Subscribers subscriber)
+        public async Task<Subscribers> GetSubscribersByBsonId(String id)
         {
             try
             {
-                var result = await Collection.FindAsync(subs => subs.CustomerId == subscriber.CustomerId);
+                var result = await Collection.FindAsync(subs => subs.CustomerId == id);
                 return result.First(); 
             }
             catch (Exception e)

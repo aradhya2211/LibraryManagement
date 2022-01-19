@@ -105,5 +105,19 @@ namespace LibraryManagement.Controllers
                 throw;
             }
         }
+        [HttpPut("/subscribe")]
+        public async Task<ActionResult> SubscribeBook(String BookId, IssuerDetails Issuer)
+        {
+            try
+            {
+                var result = await BookService.Subscribe(BookId, Issuer);
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+                throw;
+            }
+        }
     }
 }

@@ -13,7 +13,8 @@ namespace LibraryManagement.Services
         public Task<Book> DeleteBook(Book BookToBeDeleted);
         public Task<List<Book>> GetBookByName(String Name);
         public Task<Book> UpdateBook(Book BookToBeUpdated);
-        public Task<Book> GetBookById(Book BookById);
+        public Task<Book> GetBookById(String BookId);
         public Task<List<Book>> GetBooksBySubscriber(String CustomerId);
+        public Task<Book> Subscribe(String BookId, IssuerDetails Issuer);
     }
 }

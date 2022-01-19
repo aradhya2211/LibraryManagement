@@ -21,9 +21,13 @@ namespace LibraryManagement.Controllers
             {
                 var result = await subscriberServices.GetAllSubscribers();
                 if (!result.Any())
+                {
                     return NotFound();
+                }
                 else
+                {
                     return Ok(result);
+                }
             }
             catch (Exception e)
             {
@@ -31,14 +35,17 @@ namespace LibraryManagement.Controllers
                 throw;
             }
         }
-        [HttpGet("/Name/{Name}")]
+        [HttpGet("/sub/{Name}")]
         public async Task<ActionResult> GetubSubscriberByName(String Name)
         {
             try
             {
                 var results = await subscriberServices.GetSubscribersByName(Name);
                 if (!results.Any())
+                {
                     return NotFound();
+                }
+
                 return Ok(results);
             }
             catch (Exception)
@@ -47,14 +54,17 @@ namespace LibraryManagement.Controllers
                 throw;
             }
         }
-        [HttpGet("/id")]
-        public async Task<ActionResult> GetSubscriberById(Subscribers subscriber)
+        [HttpGet("/subid/{id}")]
+        public async Task<ActionResult> GetSubscriberById(String id)
         {
             try
             {
-                var result = await subscriberServices.GetSubscribersByBsonId(subscriber);
+                var result = await subscriberServices.GetSubscribersByBsonId(id);
                 if (result != null)
+                {
                     return NotFound();
+                }
+
                 return Ok(result);
             }
             catch (Exception e)
