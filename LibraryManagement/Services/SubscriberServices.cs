@@ -19,11 +19,9 @@ namespace LibraryManagement.Services
         {
             try
             {
-
                 Client = new MongoClient(ConnectionString);
                 DataBase = Client.GetDatabase(DatabaseName);
                 Collection = DataBase.GetCollection<Subscribers>(CollectionName);
-
             }
             catch (Exception e)
             {
@@ -50,7 +48,7 @@ namespace LibraryManagement.Services
         {
             try
             {
-                await Collection.DeleteOneAsync(subs => subs.CustomerID == SubscriberToBeDeleted.CustomerID);
+                await Collection.DeleteOneAsync(subs => subs.CustomerId == SubscriberToBeDeleted.CustomerId);
                 return SubscriberToBeDeleted;
             }
             catch (Exception e)
@@ -78,7 +76,7 @@ namespace LibraryManagement.Services
         {
             try
             {
-                var result = await Collection.FindAsync(subs => subs.ID == subscriber.ID);
+                var result = await Collection.FindAsync(subs => subs.CustomerId == subscriber.CustomerId);
                 return result.First(); 
             }
             catch (Exception e)
@@ -87,21 +85,7 @@ namespace LibraryManagement.Services
                 throw;
             }
         }
-
-        public async Task<Subscribers> GetSubscribersByCustomerId(string CustomerID)
-        {
-            try
-            {
-                var result = await Collection.FindAsync(subs => subs.CustomerID == CustomerID);
-                return result.First();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw;
-            }
-        }
-
+        //Get Subscriber by Bson ID
         public async Task<List<Subscribers>> GetSubscribersByName(string Name)
         {
             try
@@ -115,12 +99,12 @@ namespace LibraryManagement.Services
                 throw;
             }
         }
-
+        //Get Subscriber by name
         public async Task<Subscribers> UpdateSubscriber(Subscribers SubscriberToBeUpdated)
         {
             try
             {
-                await Collection.ReplaceOneAsync(Subs => Subs.CustomerID == SubscriberToBeUpdated.CustomerID, SubscriberToBeUpdated);
+                await Collection.ReplaceOneAsync(Subs => Subs.CustomerId == SubscriberToBeUpdated.CustomerId, SubscriberToBeUpdated);
                 return SubscriberToBeUpdated;
             }
             catch (Exception e)
@@ -130,5 +114,6 @@ namespace LibraryManagement.Services
             }
             
         }
+        //Update Scriber
     }
 }

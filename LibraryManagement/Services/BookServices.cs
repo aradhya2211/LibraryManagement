@@ -37,7 +37,7 @@ namespace LibraryManagement.Services
         {
             try
             {
-                var result = await Collection.DeleteOneAsync(book => book.Id == BookToBeDeleted.Id);
+                var result = await Collection.DeleteOneAsync(book => book._id == BookToBeDeleted._id);
                 return BookToBeDeleted;
             }
             catch (Exception e)
@@ -80,7 +80,7 @@ namespace LibraryManagement.Services
             try
             {
                await Collection.InsertOneAsync(NewBook);
-                Console.WriteLine(NewBook.Id);
+                Console.WriteLine(NewBook._id);
                return await GetBookById(NewBook);
             }
             catch (Exception e)
@@ -94,16 +94,8 @@ namespace LibraryManagement.Services
         {
             try
             {
-                var result = await GetBookById(BookToBeUpdated);
-                if(result != null)
-                {
-                    await Collection.ReplaceOneAsync(book => book.Id == BookToBeUpdated.Id, BookToBeUpdated);
-                }
-                else
-                {
-                    await InsertNewBook(BookToBeUpdated);
-                }
-                return BookToBeUpdated;
+                await Collection.ReplaceOneAsync(book => book._id == BookToBeUpdated._id, BookToBeUpdated);
+                return await GetBookById(BookToBeUpdated);
             }
             catch (Exception e)
             {
@@ -117,7 +109,7 @@ namespace LibraryManagement.Services
         {
             try
             {
-                var result = await Collection.FindAsync(book => book.Id == BookById.Id);
+                var result = await Collection.FindAsync(book => book._id == BookById._id);
                 return result.FirstOrDefault();
             }
             catch (Exception e)

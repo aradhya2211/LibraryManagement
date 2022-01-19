@@ -9,12 +9,16 @@ namespace LibraryManagement.Models
 {
     public record Book
     {
+        public Book()
+        {
+            this._id = ObjectId.GenerateNewId(DateTime.Now).ToString();
+        }
         public String Name { get; set; }                        
         //Name of the book
         public String Author { get; set; }                      
         //Name of the Author
         [BsonId]
-        public ObjectId Id { get; set; }                      
+        public String _id { get; set; }                      
         //Unique ID
         public int Cost { get; set; }                           
         //Cost of the book

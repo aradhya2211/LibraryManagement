@@ -10,12 +10,13 @@ namespace LibraryManagement.Models
 {
     public record Subscribers
     {
+        public Subscribers()
+        {
+            this.CustomerId = ObjectId.GenerateNewId(DateTime.Now).ToString();
+        }
         [BsonId]
-        public ObjectId ID { get; set; }
+        public String CustomerId { get; set; }
         //MongoDb ID
-        [BsonId(IdGenerator = typeof(CounterIdGenerator))]
-        public String CustomerID { get; set; }
-        //Customer ID
         public String Name { get; set; }
         //Customer Name
         public int Age { get; set; }
@@ -34,17 +35,4 @@ namespace LibraryManagement.Models
         //Membership Expiration Date
     }
 
-    internal class CounterIdGenerator : IIdGenerator
-    {
-        private static int _counter = 100; 
-        public object GenerateId(object container, object document) 
-        {
-            DateTime dateTime = new DateTime();
-            return $"Subs/{dateTime.Year.ToString()}/{_counter++.ToString()}"; 
-        }
-        public bool IsEmpty(object id) 
-        { 
-            return id.Equals(default(String)); 
-        }
-    }
 }

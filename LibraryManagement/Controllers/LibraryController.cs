@@ -13,7 +13,7 @@ namespace LibraryManagement.Controllers
     [ApiController]
     public class LibraryController : ControllerBase
     {
-        //Constructor
+        //Define field
         public BookServices BookService = new BookServices();
         [HttpGet]
         //Get all Books
@@ -30,7 +30,7 @@ namespace LibraryManagement.Controllers
                 return NotFound(e.Message);
             }
         }
-        [HttpGet("/{Name}")]
+        [HttpGet("/Name/{Name}")]
         //Get Book by Name
         public async Task<ActionResult> GetBookByName(String Name)
         {
@@ -45,7 +45,7 @@ namespace LibraryManagement.Controllers
                 return NotFound(e.Message);
             }
         }
-        [HttpGet("/{CustomerId}")]
+        [HttpGet("/subscriptions/{CustomerId}")]
         //Get All books issued by the customer
         public  async Task<ActionResult> GetBooksByCustomerId(String CustomerId)
         {
