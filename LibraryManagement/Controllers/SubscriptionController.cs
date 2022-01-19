@@ -1,4 +1,5 @@
 ﻿using LibraryManagement.Models;
+using LibraryManagement.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,18 +13,11 @@ namespace LibraryManagement.Controllers
     [ApiController]
     public class SubscriptionController : ControllerBase
     {
+        SubscriberServices subscriberServices = new SubscriberServices();
         [HttpGet]
         public ActionResult GetSubscribers()
         {
-            Subscribers[] subscribers = { 
-                new() {Name = "Aradhya", MembershipPlan = 6},
-                new() {Name = "Saxena", MembershipPlan = 2}
-            };
-
-            if (!subscribers.Any())
-                return NotFound();
-
-            return Ok(subscribers);
+            
         }
     }
 }

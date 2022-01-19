@@ -52,7 +52,7 @@ namespace LibraryManagement.Services
         {
             try
             {
-                return await Collection.Find(_ => true).ToListAsync();
+                return await Collection.Find(_ => true).Limit(100).ToListAsync();
             }
             catch (Exception e)
             {
@@ -126,6 +126,22 @@ namespace LibraryManagement.Services
                 throw;
             }
             throw new NotImplementedException();
+        }
+
+        public async Task<List<Book>> GetBooksBySubscriber(String CustomerId)
+        {
+            try
+            {
+                var result = await Collection.Find(book => book.Issuers
+                .Where(IssueDetails => IssueDetails.CustomerID == CustomerId) != null)
+                    .ToListAsync();
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
     }
 }

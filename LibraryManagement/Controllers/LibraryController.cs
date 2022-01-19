@@ -45,7 +45,22 @@ namespace LibraryManagement.Controllers
                 return NotFound(e.Message);
             }
         }
+        [HttpGet("/{CustomerId}")]
+        //Get All books issued by the customer
+        public  async Task<ActionResult> GetBooksByCustomerId(String CustomerId)
+        {
+            try
+            {
+                var result = await BookService.GetBooksBySubscriber(CustomerId);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
         [HttpPost]
+        //Get Book by Name
         public async Task<ActionResult> InsertBook(Book NewBook)
         {
             try
@@ -61,6 +76,7 @@ namespace LibraryManagement.Controllers
             }
         }
         [HttpDelete]
+        //Delete Book
         public async Task<ActionResult> DeleteBook(Book BookToBeDeleted)
         {
             try
@@ -75,6 +91,7 @@ namespace LibraryManagement.Controllers
             }
         }
         [HttpPut]
+        //Update Book info
         public async Task<ActionResult> UpdateBook(Book BookToBeUpdated)
         {
             try

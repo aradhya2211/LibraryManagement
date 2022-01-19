@@ -14,5 +14,6 @@ namespace LibraryManagement.Services
         public Task<List<Book>> GetBookByName(String Name);
         public Task<Book> UpdateBook(Book BookToBeUpdated);
         public Task<Book> GetBookById(Book BookById);
+        public Task<List<Book>> GetBooksBySubscriber(String CustomerId);
     }
 }
