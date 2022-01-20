@@ -31,8 +31,8 @@ namespace LibraryManagement.Services
                 Console.WriteLine(e.Message);
                 throw;
             }
-        } 
-
+        }
+        //Delete Book Function
         public async Task<Book> DeleteBook(Book BookToBeDeleted)
         {
             try
@@ -47,7 +47,7 @@ namespace LibraryManagement.Services
             }
             throw new NotImplementedException();
         }
-
+        //Get all books
         public async Task<List<Book>> GetAllBooks()
         {
             try
@@ -60,7 +60,7 @@ namespace LibraryManagement.Services
                 throw;
             }
         }
-
+        //Get Books by name
         public async Task<List<Book>> GetBookByName(string Name)
         {
             try
@@ -74,13 +74,13 @@ namespace LibraryManagement.Services
             }
             throw new NotImplementedException();
         }
-
+        //Add new book to the library
         public async Task<Book> InsertNewBook(Book NewBook)
         {
             try
             {
-               await Collection.InsertOneAsync(NewBook);
-               return await GetBookById(NewBook._id);
+                await Collection.InsertOneAsync(NewBook);
+                return await GetBookById(NewBook._id);
             }
             catch (Exception e)
             {
@@ -88,7 +88,7 @@ namespace LibraryManagement.Services
                 throw;
             }
         }
-
+        //Update book info
         public async Task<Book> UpdateBook(Book BookToBeUpdated)
         {
             try
@@ -103,7 +103,7 @@ namespace LibraryManagement.Services
             }
             throw new NotImplementedException();
         }
-
+        //Get book by ID
         public async Task<Book> GetBookById(String BookId)
         {
             try
@@ -118,7 +118,7 @@ namespace LibraryManagement.Services
             }
             throw new NotImplementedException();
         }
-
+        //Get books Subcribers
         public async Task<List<Book>> GetBooksBySubscriber(String CustomerId)
         {
             try
@@ -134,15 +134,21 @@ namespace LibraryManagement.Services
                 throw;
             }
         }
-
+        //Subscribe a book
         public async Task<Book> Subscribe(String BookId, IssuerDetails Issuer)
         {
             try
             {
+                //Date of subscription
                 Issuer.SubscriptionDate = DateTime.Now;
+                //Expected date of return
                 Issuer.DateOfReturn = Issuer.SubscriptionDate.AddDays(Issuer.SubscriptionDuration);
+                //subscription is alive
+                Issuer.IsSubscribed = true;
                 var BookToBeSubscribed = await GetBookById(BookId);
-                if(BookToBeSubscribed.Issuers == null)
+                //decrement available copies
+                BookToBeSubscribed.Copies--;
+                if (BookToBeSubscribed.Issuers == null)
                 {
                     List<IssuerDetails> NewIssuerList = new List<IssuerDetails>();
                     NewIssuerList.Add(Issuer);
@@ -154,6 +160,38 @@ namespace LibraryManagement.Services
                 }
                 var result = await Collection.ReplaceOneAsync(book => book._id == BookId, BookToBeSubscribed);
                 return BookToBeSubscribed;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+        //Return a book
+        public async Task<Book> ReturnBook(string BookId, IssuerDetails Issuer)
+        {
+            Book ReturnedBook;
+            IssuerDetails Issue;
+            try
+            {
+                ReturnedBook = await GetBookById(BookId);
+                Issue = ReturnedBook.Issuers.Where(iss => iss.CustomerID == Issuer.CustomerID).FirstOrDefault();
+                Issue.DateOfReturn = DateTime.Now;
+                //Increment number of copies
+                ReturnedBook.Copies++;
+                //Calculate Fine
+                if (Issue.SubscriptionDate.AddDays(Issue.SubscriptionDuration) < Issue.DateOfReturn)
+                {
+                    Issue.Fine = (Issue.DateOfReturn.Subtract(Issue.SubscriptionDate).TotalDays
+                        - Issue.SubscriptionDuration)
+                        * ReturnedBook.FinePerDay;
+                }
+                else
+                {
+                    Issue.Fine = 0;
+                }
+                await Collection.ReplaceOneAsync(book => book._id == ReturnedBook._id, ReturnedBook);
+                return ReturnedBook;
             }
             catch (Exception e)
             {

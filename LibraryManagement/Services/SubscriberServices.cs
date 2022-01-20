@@ -34,8 +34,8 @@ namespace LibraryManagement.Services
         {
             try
             {
-                    await Collection.InsertOneAsync(NewSubscriber);
-                    return NewSubscriber;
+                await Collection.InsertOneAsync(NewSubscriber);
+                return NewSubscriber;
             }
             catch (Exception e)
             {
@@ -77,7 +77,7 @@ namespace LibraryManagement.Services
             try
             {
                 var result = await Collection.FindAsync(subs => subs.CustomerId == id);
-                return result.First(); 
+                return result.First();
             }
             catch (Exception e)
             {
@@ -112,7 +112,7 @@ namespace LibraryManagement.Services
                 Console.WriteLine(e.Message);
                 throw;
             }
-            
+
         }
         //Update Scriber
     }

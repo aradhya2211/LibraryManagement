@@ -31,7 +31,7 @@ namespace LibraryManagement.Controllers
             }
         }
         [HttpGet("/Name/{Name}")]
-        //Get Book by Name
+        //Get a Book by Name
         public async Task<ActionResult> GetBookByName(String Name)
         {
             try
@@ -46,8 +46,8 @@ namespace LibraryManagement.Controllers
             }
         }
         [HttpGet("/subscriptions/{CustomerId}")]
-        //Get All books issued by the customer
-        public  async Task<ActionResult> GetBooksByCustomerId(String CustomerId)
+        //Get All books issued by the subscriber
+        public async Task<ActionResult> GetBooksByCustomerId(String CustomerId)
         {
             try
             {
@@ -106,6 +106,7 @@ namespace LibraryManagement.Controllers
             }
         }
         [HttpPut("/subscribe")]
+        //Subscribe Book
         public async Task<ActionResult> SubscribeBook(String BookId, IssuerDetails Issuer)
         {
             try
@@ -116,6 +117,23 @@ namespace LibraryManagement.Controllers
             catch (Exception)
             {
                 return BadRequest();
+                throw;
+            }
+        }
+        [HttpPut("/ReturnBook")]
+        //Return a book
+        public async Task<ActionResult> ReturnBook(String BookId, IssuerDetails Issuer)
+        {
+            try
+            {
+                //Call Return Book Function
+                var result = await BookService.ReturnBook(BookId, Issuer);
+                //reutrn OK with result
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
                 throw;
             }
         }

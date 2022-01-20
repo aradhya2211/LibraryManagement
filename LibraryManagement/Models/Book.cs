@@ -13,34 +13,37 @@ namespace LibraryManagement.Models
         {
             this._id = ObjectId.GenerateNewId(DateTime.Now).ToString();
         }
-        public String Name { get; set; }                        
+        public String Name { get; set; }
         //Name of the book
-        public String Author { get; set; }                      
+        public String Author { get; set; }
         //Name of the Author
         [BsonId]
-        public String _id { get; set; }                      
+        public String _id { get; set; }
         //Unique ID
-        public int Cost { get; set; }                           
+        public int Cost { get; set; }
         //Cost of the book
-        public List<IssuerDetails> Issuers { get; set; }               
+        public List<IssuerDetails> Issuers { get; set; }
         //History of subscriptions
-        public bool Available { get; set; }                     
+        public bool Available { get; set; }
         //If available or issued
-        public double FinePerDay { get; set; }                      
+        public double FinePerDay { get; set; }
         //Fine per day for late return
+        public int Copies { get; set; }
+        //Number of copies available at the library
     }
 
     public record IssuerDetails
     {
-        public String CustomerID { get; set; }                       
+        public String CustomerID { get; set; }
         //Subscriber Details
-        public DateTime SubscriptionDate { get; set; }                          
+        public DateTime SubscriptionDate { get; set; }
         //Date of subscription
-        public int SubscriptionDuration { get; set; }                           
+        public int SubscriptionDuration { get; set; }
         //Subscription Duration in days
-        public DateTime DateOfReturn { get; set; }                              
+        public DateTime DateOfReturn { get; set; }
         //Date of return of the book
-        public double Fine => DateOfReturn.Subtract(SubscriptionDate).TotalDays - SubscriptionDuration;
+        public double Fine { get; set; }
         //Fine implied due to late return
+        public bool IsSubscribed { get; set; }
     }
 }

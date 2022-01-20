@@ -16,5 +16,6 @@ namespace LibraryManagement.Services
         public Task<Book> GetBookById(String BookId);
         public Task<List<Book>> GetBooksBySubscriber(String CustomerId);
         public Task<Book> Subscribe(String BookId, IssuerDetails Issuer);
+        public Task<Book> ReturnBook(String BookId, IssuerDetails Issuer);
     }
 }

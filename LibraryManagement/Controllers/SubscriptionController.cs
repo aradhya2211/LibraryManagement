@@ -15,6 +15,7 @@ namespace LibraryManagement.Controllers
     {
         SubscriberServices subscriberServices = new SubscriberServices();
         [HttpGet]
+        //Get Subscribers
         public async Task<ActionResult> GetSubscribers()
         {
             try
@@ -36,6 +37,7 @@ namespace LibraryManagement.Controllers
             }
         }
         [HttpGet("/sub/{Name}")]
+        //Get SUbscribers by name
         public async Task<ActionResult> GetubSubscriberByName(String Name)
         {
             try
@@ -55,6 +57,7 @@ namespace LibraryManagement.Controllers
             }
         }
         [HttpGet("/subid/{id}")]
+        //Get subscribers by Id
         public async Task<ActionResult> GetSubscriberById(String id)
         {
             try
@@ -74,6 +77,7 @@ namespace LibraryManagement.Controllers
             }
         }
         [HttpPost]
+        //Add new subscribers
         public async Task<ActionResult> AddNewSubscriber(Subscribers NewSubscriber)
         {
             try
@@ -88,6 +92,7 @@ namespace LibraryManagement.Controllers
             }
         }
         [HttpPut]
+        //Update Subscriber
         public async Task<ActionResult> UpdateSubscriber(Subscribers UpdatedSubscriber)
         {
             try
@@ -102,6 +107,7 @@ namespace LibraryManagement.Controllers
             }
         }
         [HttpDelete]
+        //Delete Subscriber
         public async Task<ActionResult> DeleletSubscriber(Subscribers subscriber)
         {
             try
